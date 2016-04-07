@@ -103,9 +103,9 @@ public class Connection{
 				//System.out.println("1) "+Delta1_2+" 2) "+Delta2_2+" 3) "+Delta3_2);
 				//System.out.println(" + "+hata+" "+Delta6_1);
 
-				Delta4_1 = alfa*hata*sigmoid1+0.8f*Delta4_1;
-				Delta5_1 = alfa*hata*sigmoid2+0.8f*Delta5_1;
-				Delta6_1 = alfa*hata*1+0.8f*Delta6_1;
+				Delta4_1 = alfa*hata*sigmoid1+0.6f*Delta4_1;
+				Delta5_1 = alfa*hata*sigmoid2+0.6f*Delta5_1;
+				Delta6_1 = alfa*hata*1+0.6f*Delta6_1;
 
 
 				//ara katman hesaplama
@@ -113,13 +113,13 @@ public class Connection{
 				float hata5 = hata*weights[7]*sigmoid2*(1.0f-(sigmoid2));
 				//System.out.println("* "+hata4+" * "+hata5+" *weigths[6] : "+weights[6]+" *weigths[7] : "+weights[7]);
 
-				Delta1_1 = alfa*hata4*inputs[0][t]+0.8f*Delta1_1;//net1 icin
-				Delta2_1 = alfa*hata4*inputs[1][t]+0.8f*Delta2_1;//net1 icin
-				Delta3_1 = alfa*hata4*1+0.8f*Delta3_1;//net1 icin
+				Delta1_1 = alfa*hata4*inputs[0][t]+0.6f*Delta1_1;//net1 icin
+				Delta2_1 = alfa*hata4*inputs[1][t]+0.6f*Delta2_1;//net1 icin
+				Delta3_1 = alfa*hata4*1+0.6f*Delta3_1;//net1 icin
 
-				Delta1_2 = alfa*hata5*inputs[0][t]+0.7f*Delta1_2;//net2 icin
-				Delta2_2 = alfa*hata5*inputs[1][t]+0.7f*Delta2_2;//net2 icin
-				Delta3_2 = alfa*hata5*1+0.7f*Delta3_2;//net2 icin
+				Delta1_2 = alfa*hata5*inputs[0][t]+0.6f*Delta1_2;//net2 icin
+				Delta2_2 = alfa*hata5*inputs[1][t]+0.6f*Delta2_2;//net2 icin
+				Delta3_2 = alfa*hata5*1+0.6f*Delta3_2;//net2 icin
 
 				weights[0] += Delta1_1;
 				weights[1] += Delta2_1;
@@ -171,3 +171,4 @@ public class Connection{
 
 }
 //17ef
+//7e60
