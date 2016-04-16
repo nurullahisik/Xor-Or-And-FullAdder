@@ -37,10 +37,11 @@ public class Connection{
 		weights = new float[9];
 		float [] weights1 = new float[9];
 		float alfa = 0.25f;
+		float momentum = 0.6f;
 		int bias = 1;
 		float Delta1_1 = 0.0f, Delta2_1 = 0.0f, Delta3_1 = 0.0f, Delta4_1 = 0.0f,
 		Delta1_2= 0.0f, Delta2_2 = 0.0f, Delta3_2 = 0.0f,  Delta5_1 = 0.0f, Delta6_1 = 0.0f;
-
+		float hataOrani = 0.0f;
 		//String str = "";
 
 		// girdileri al
@@ -80,7 +81,7 @@ public class Connection{
 			weights1[i] = 0.0f;
 		}
 
-		for(int i=0;i<2000;i++){
+		do{
 			for(int t=0;t<4;t++){
 				//feedforward
 				float net1 = inputs[0][t]*weights[0]+inputs[1][t]*weights[1]+bias*weights[2];
@@ -93,7 +94,9 @@ public class Connection{
 				//System.out.println("sigmoid1 : "+sigmoid1+" sigmoid2 : "+sigmoid2+" sigmoid3 : "+sigmoid3);
 
 				System.out.println("islenilen cikti : "+outputs[t]+"\thesaplanan cikti : "+sigmoid3);
-
+					
+				hataOrani = outputs[t]-sigmoid3;
+				
 				//backpropagition
 				//cikti katmani hesaplama
 				float hata = (outputs[t]-sigmoid3)*(sigmoid3)*(1-sigmoid3);
@@ -103,9 +106,9 @@ public class Connection{
 				//System.out.println("1) "+Delta1_2+" 2) "+Delta2_2+" 3) "+Delta3_2);
 				//System.out.println(" + "+hata+" "+Delta6_1);
 
-				Delta4_1 = alfa*hata*sigmoid1+0.6f*Delta4_1;
-				Delta5_1 = alfa*hata*sigmoid2+0.6f*Delta5_1;
-				Delta6_1 = alfa*hata*1+0.6f*Delta6_1;
+				Delta4_1 = alfa*hata*sigmoid1+momentum*Delta4_1;
+				Delta5_1 = alfa*hata*sigmoid2+momentum*Delta5_1;
+				Delta6_1 = alfa*hata*1+momentum*Delta6_1;
 
 
 				//ara katman hesaplama
@@ -113,13 +116,13 @@ public class Connection{
 				float hata5 = hata*weights[7]*sigmoid2*(1.0f-(sigmoid2));
 				//System.out.println("* "+hata4+" * "+hata5+" *weigths[6] : "+weights[6]+" *weigths[7] : "+weights[7]);
 
-				Delta1_1 = alfa*hata4*inputs[0][t]+0.6f*Delta1_1;//net1 icin
-				Delta2_1 = alfa*hata4*inputs[1][t]+0.6f*Delta2_1;//net1 icin
-				Delta3_1 = alfa*hata4*1+0.6f*Delta3_1;//net1 icin
+				Delta1_1 = alfa*hata4*inputs[0][t]+momentum*Delta1_1;//net1 icin
+				Delta2_1 = alfa*hata4*inputs[1][t]+momentum*Delta2_1;//net1 icin
+				Delta3_1 = alfa*hata4*1+momentum*Delta3_1;//net1 icin
 
-				Delta1_2 = alfa*hata5*inputs[0][t]+0.6f*Delta1_2;//net2 icin
-				Delta2_2 = alfa*hata5*inputs[1][t]+0.6f*Delta2_2;//net2 icin
-				Delta3_2 = alfa*hata5*1+0.6f*Delta3_2;//net2 icin
+				Delta1_2 = alfa*hata5*inputs[0][t]+momentum*Delta1_2;//net2 icin
+				Delta2_2 = alfa*hata5*inputs[1][t]+momentum*Delta2_2;//net2 icin
+				Delta3_2 = alfa*hata5*1+momentum*Delta3_2;//net2 icin
 
 				weights[0] += Delta1_1;
 				weights[1] += Delta2_1;
@@ -138,7 +141,7 @@ public class Connection{
 					//System.out.println(x+". "+weights[x]);
 				}
 
-				frm.lm0.addElement(i+") "+weights[0]+weights[1]+weights[2]+weights[3]+weights[4]+weights[5]+weights[6]
+				frm.lm0.addElement(""+weights[0]+weights[1]+weights[2]+weights[3]+weights[4]+weights[5]+weights[6]
 				+weights[7]+weights[8]);
 
 			}
@@ -150,7 +153,7 @@ public class Connection{
 				}
 			}
 			str += ";\n";*/
-		}
+		}while(hataOrani<0.01f);
 
 		/*FileWriter fileWriter = new FileWriter("weights.txt", false);
 		BufferedWriter bWriter = new BufferedWriter(fileWriter);
